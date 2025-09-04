@@ -1,0 +1,11 @@
+esac
+github
+google
+https
+idx
+ssh
+ubuntu
+usr
+wikipedia
+workaround
+workarounds
