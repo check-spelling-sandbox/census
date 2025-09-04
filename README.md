@@ -1,1 +1,1 @@
-# census
+# check-spelling/census

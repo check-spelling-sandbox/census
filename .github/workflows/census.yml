@@ -1,0 +1,38 @@
+name: check-spelling Census
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      org:
+        description: GitHub Organization
+        type: string
+        default: ''
+      branch:
+        description: Repository branch 
+        type: string
+        default: spell-check
+      files:
+        description: Files to retrieve
+      config:
+        description: Directory with check-spelling metadata
+        type: string
+        default: .github/actions/spelling
+
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: retrieve
+        shell: bash
+        run: |
+          : census
+          ./census.sh "$org" "$branch" "$files" "$config"
+        env:
+          org: ${{ inputs.org || github.repository_owner }}
+          branch: ${{ inputs.branch }}
+          files: ${{ inputs.files }}
+          config: ${{ inputs.config }}
+          GH_TOKEN: ${{ github.token }}
