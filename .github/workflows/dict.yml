@@ -1,0 +1,37 @@
+name: check-spelling Dictionaries
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: count
+        shell: bash
+        run: |
+          : count
+          git ls-files '*.txt'|xargs sort |uniq -c|sort -nr > /tmp/counted.txt
+      - name: build
+        shell: bash
+        run: |
+          : build
+          mkdir -p dictionaries
+          for i in $(seq 5 9) $(seq 10 10 20); do
+            i=$i perl -e 'my $i=$ENV{i};
+              while (<>) {
+                next unless s/^\s+(\d+)\s+//;
+                last if $1 < $i;
+                print;
+              };
+              ' /tmp/counted.txt | sort -f > dictionaries/$i.txt
+          done
+          git add dictionaries
+          git checkout -B dictionaries
+          tag=dictionaries-$(git rev-parse HEAD)
+          git -c user.name='check-spelling census' -c user.email=census@check-spelling.dev commit -m "Update dictionaries"
+          git tag $tag
+          git push origin $tag
