@@ -6,7 +6,9 @@ files="${3:-allow.txt expect.txt}"
 config="${4:-.github/actions/spelling}"
 repos=$(mktemp)
 set -x
-git rm -rf .census
+if [ -d .census ]; then
+  git rm -rf .census
+fi
 mkdir -p .census
 while : ; do
   gh api "/orgs/$org/repos?page=$page" > "$repos"
@@ -17,7 +19,7 @@ while : ; do
   fi
   page=$(( $page + 1 ))
   for repo in $(cat "$repos_list"); do
-    if [ ! -e "$repo" ] ; then
+    if [ ! -e "$org/$repo"/.scan ] ; then
       mkdir -p "$org/$repo"
       touch "$org/$repo"/.scan
     fi
@@ -31,7 +33,6 @@ for repo in $(find $org -mindepth 1 -maxdepth 1 -type d); do
       mkdir -p "$repo/$config"
       for file in $(echo "$files"); do
         curl -fsL "https://raw.githubusercontent.com/$repo/$sha/$config/$file" -o "$repo/$config/$file" || touch "$repo/$config/$file"
-        echo 
       done
     fi
   fi
