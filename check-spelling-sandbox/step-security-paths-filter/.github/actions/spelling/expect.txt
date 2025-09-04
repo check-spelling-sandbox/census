@@ -1,0 +1,16 @@
+amd
+Autobuild
+buildscript
+dorny
+ecma
+file'with
+gitleaks
+jsyaml
+linting
+linux
+nektos
+scorecards
+stepsecurity
+textlint
+umd
+workflows
