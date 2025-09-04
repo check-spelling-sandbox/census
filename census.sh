@@ -1,7 +1,7 @@
 #!/bin/sh
 org=${1:-check-spelling-sandbox}
 page=1
-branch=${2:-spell-check}
+branch=${2:-spell-check-with-spelling}
 files="${3:-allow.txt expect.txt}"
 config="${4:-.github/actions/spelling}"
 repos=$(mktemp)
